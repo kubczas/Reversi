@@ -1,0 +1,13 @@
+﻿.chessboard {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #000000;
+}
+.chessboard .square {
+  float: left;
+}
+.chessboard .green.square {
+  background-color: #43a047;
+    border: 2px solid;
+}
