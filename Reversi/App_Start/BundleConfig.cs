@@ -23,7 +23,8 @@ namespace Reversi
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/chessboard").Include(
-                      "~/Scripts/chessboard.js"));
+                      "~/Scripts/chessboard.js",
+                      "~/Scripts/reversigame.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

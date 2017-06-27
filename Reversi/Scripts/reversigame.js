@@ -1,5 +1,20 @@
-﻿
-function onSquareClick(clickedSquare, selectedSquares) {
+﻿var board;
+var TURNS = {
+    WHITE: 1,
+    BLACK: 2
+}
+var currentTurn = TURNS.WHITE;
+var lastFocused;
+
+function init() {
+    board = new ChessBoard('board', {
+        onSquareClick: onSquareClick,
+        onSquareFocus: onSquareFocus,
+        onSquareFocusLost: onSquareFocusLost
+    });
+}
+
+function onSquareClick(clickedSquare) {
     if (selectedSquares.length === 0) {
         if (game.moves({ square: clickedSquare }).length > 0) {
             board.selectSquare(clickedSquare);
@@ -41,4 +56,28 @@ function onSquareClick(clickedSquare, selectedSquares) {
     } else {
         move(selectedSquare, clickedSquare);
     }
+}
+
+function onSquareFocus(focusedSquare, focusSquareRow, focusSquareColumn, board) {
+    lastFocused = focusedSquare;
+    focusedSquare.style.color = 'red';
+    //var pieces = board.element.getElementsByClassName('green square');
+    //if (currentTurn === TURNS.WHITE) {
+    //    var piecesFromRow = getPiecesFromRow(pieces, focusSquareRow);
+    //    for(var i = 0; i < )
+    //}
+}
+
+function onSquareFocusLost() {
+    lastFocused.style.color = 'black';
+}
+
+function getPiecesFromRow(pieces, row) {
+    var piecesFromRow = [];
+    for (var i = 0; i < pieces.length; i++) {
+        if (pieces[i].getAttribute('data-square-row') === row) {
+            piecesFromRow.push(pieces[i]);
+        }
+    }
+    return piecesFromRow;
 }

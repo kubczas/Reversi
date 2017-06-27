@@ -14,6 +14,11 @@
     border: 2px solid;
 }
 
+.chessboard .tip.square {
+    background-color: #000080;
+    border: 2px solid;
+}
+
 .chessboard .white.piece {
     border-radius: 50%;
     float: left;
