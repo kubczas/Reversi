@@ -18,6 +18,7 @@ function createBoard() {
     var boardElement = document.getElementById('board');
     boardElement.classList.add('chessboard');
     board.element = boardElement;
+    calculateSquareSize();
     for (var r = 8; r >= 1; r--) {
         var rowElement = document.createElement('div');
 
@@ -30,12 +31,10 @@ function createBoard() {
             squareElement.style.width = squareSize;
             squareElement.style.height = squareSize;
             squareElement.className = 'green square';
-
             board[r][c] = {
-                element: squareElement,
-                piece: null
+                element: squareElement
             };
-
+            setStartedPieces(squareElement,r,c);
             rowElement.appendChild(squareElement);
         }
 
@@ -83,4 +82,23 @@ function calculateBoardSize() {
             board[r][c].element.style.backgroundSize = backgroundSizePx;
         }
     }
+}
+
+function setStartedPieces(squareElement,row,column) {
+    if ((row === 5 && column === 3) || (row === 4 && column === 4)) {
+        var whitePiece = document.createElement('div');
+        whitePiece.className = 'white piece';
+        setSquareElementSize(whitePiece);
+        squareElement.appendChild(whitePiece);
+    } else if ((row === 5 && column === 4) || (row === 4 && column === 3)) {
+        var blackPiece = document.createElement('div');
+        setSquareElementSize(blackPiece);
+        blackPiece.className = 'black piece';
+        squareElement.appendChild(blackPiece);
+    }
+}
+
+function setSquareElementSize(element) {
+    element.style.width = squareSize + 'px';
+    element.style.height = squareSize + 'px';
 }
