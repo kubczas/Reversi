@@ -4,8 +4,9 @@ var TURNS = {
     BLACK: 2
 }
 var currentTurn = TURNS.WHITE;
+var canSetPiece = false;
 var lastFocused;
-var validationDirectionCoordinates = [
+var directionCoordinates = [
     { direction: "LeftUp", coordinates: { x: -1, y: 1 } },
     { direction: "Up", coordinates: { x: 0, y: 1 } },
     { direction: "UpRight", coordinates: { x: 1, y: 1 } },
@@ -32,7 +33,41 @@ function verifyIfFocusedSquareHasPlacedPiece(focusedSquare) {
     return focusedSquare.classList.contains('whiteplaced') || focusedSquare.classList.contains('blackplaced');
 }
 
-function onSquareClick(clickedSquare) {
+function changeCurrentTurn() {
+    if (currentTurn === TURNS.WHITE)
+        currentTurn = TURNS.BLACK;
+    else
+        currentTurn = TURNS.WHITE;
+}
+
+function updatePieceForSpecificDirection(directionX, directionY, focusedSquareRow, focusedSquareColumn, board) {
+    var currentX = (Number(focusedSquareColumn) + Number(directionX));
+    var currentY = (Number(focusedSquareRow) + Number(directionY));
+
+    while (currentX < 8 && currentX >= 0 && currentY <= 8 && currentY >= 1) {
+        var currentSquare = getSquare(currentX, currentY, board);
+        changePieceColor(currentSquare);
+        currentX = (Number(currentX) + Number(directionX));
+        currentY = (Number(currentY) + Number(directionY));
+    }
+}
+
+function updatePieces(clickedSquare, clickedSquareRow, clickedSquareColumn, board) {
+    for (var i = 0; i < 8; i++) {
+        if (isPieceFullifulRequirement(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, clickedSquareRow, calcSquareColumn(clickedSquareColumn), board)) {
+            updatePieceForSpecificDirection(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, clickedSquareRow, calcSquareColumn(clickedSquareColumn), board);
+        }
+    }
+}
+
+function onSquareClick(clickedSquare, clickedSquareRow, clickedSquareColumn, board, squareSize) {
+    if (canSetPiece) {
+        createPiece(clickedSquare, squareSize);
+        canSetPiece = false;
+        clickedSquare.style.color = 'black';
+        updatePieces(clickedSquare, clickedSquareRow, clickedSquareColumn, board);
+        changeCurrentTurn();
+    }
 }
 
 function onSquareFocus(focusedSquare, focusSquareRow, focusSquareColumn, board) {
@@ -42,8 +77,9 @@ function onSquareFocus(focusedSquare, focusSquareRow, focusSquareColumn, board) 
         return;
     }
     for (var i = 0; i < 8; i++) {
-        if (isPieceFullifulRequirement(validationDirectionCoordinates[i].coordinates.x, validationDirectionCoordinates[i].coordinates.y, focusSquareRow, calcSquareColumn(focusSquareColumn), board)) {
+        if (isPieceFullifulRequirement(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, focusSquareRow, calcSquareColumn(focusSquareColumn), board)) {
             focusedSquare.style.color = 'green';
+            canSetPiece = true;
             return;
         }
     }
@@ -52,9 +88,10 @@ function onSquareFocus(focusedSquare, focusSquareRow, focusSquareColumn, board) 
 
 function onSquareFocusLost() {
     lastFocused.style.color = 'black';
+    canSetPiece = false;
 }
 
-function GetSquare(column, row, board) {
+function getSquare(column, row, board) {
     var currentRow = board[row];
     return currentRow[column];
 }
@@ -77,9 +114,9 @@ function isPieceFullifulRequirement(directionX, directionY, focusedSquareRow, fo
     var currentY = (Number(focusedSquareRow) + Number(directionY));
 
     while (currentX < 8 && currentX >= 0 && currentY <= 8 && currentY >= 1) {
-        var currentSquare = GetSquare(currentX, currentY, board);
+        var currentSquare = getSquare(currentX, currentY, board);
         if (isOtherPiecesColorPlaced(currentSquare)) {
-            nextPiece = GetSquare(currentX + directionX, currentY + directionY, board);
+            nextPiece = getSquare(currentX + directionX, currentY + directionY, board);
         } else {
             break;
         }

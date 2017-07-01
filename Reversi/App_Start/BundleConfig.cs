@@ -24,7 +24,8 @@ namespace Reversi
 
             bundles.Add(new ScriptBundle("~/bundles/chessboard").Include(
                       "~/Scripts/chessboard.js",
-                      "~/Scripts/reversigame.js"));
+                      "~/Scripts/reversigame.js",
+                      "~/Scripts/pieceService.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

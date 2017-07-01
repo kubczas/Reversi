@@ -129,21 +129,19 @@
     }
 
     function onSquareClick(event) {
-        var clickedSquare = event.target.getAttribute('data-square');
-
-        options.onSquareClick(clickedSquare);
+        var clickedSquareRow = event.target.getAttribute('data-square-row');
+        var clickedSquareColumn = event.target.getAttribute('data-square-column');
+        var clickedSquare = getBoardSquare(clickedSquareRow, clickedSquareColumn).element;
+        options.onSquareClick(clickedSquare, clickedSquareRow, clickedSquareColumn, board, squareSize);
     }
 
     function onSquareFocus(event) {
         var focusedSquareRow = event.target.getAttribute('data-square-row');
         var focusedSquareColumn = event.target.getAttribute('data-square-column');
         var focusedSquare = getBoardSquare(focusedSquareRow, focusedSquareColumn).element;
-        if (focusedSquare.classList.contains('placed')) {
-            
-        } else {
+        if (!focusedSquare.classList.contains('placed')) {
             options.onSquareFocus(focusedSquare, focusedSquareRow, focusedSquareColumn, board);
         }
-            
     }
     
     function onSquareFocusLost(event) {
