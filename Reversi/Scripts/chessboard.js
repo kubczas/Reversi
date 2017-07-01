@@ -107,13 +107,13 @@
             var whitePiece = document.createElement('div');
             whitePiece.className = 'white piece';
             setSquareElementSize(whitePiece);
-            squareElement.classList.add('placed');
+            squareElement.classList.add('whiteplaced');
             squareElement.appendChild(whitePiece);
         } else if ((row === 5 && column === 4) || (row === 4 && column === 3)) {
             var blackPiece = document.createElement('div');
             setSquareElementSize(blackPiece);
             blackPiece.className = 'black piece';
-            squareElement.classList.add('placed');
+            squareElement.classList.add('blackplaced');
             squareElement.appendChild(blackPiece);
         }
     }
