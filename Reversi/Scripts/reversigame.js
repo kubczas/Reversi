@@ -46,7 +46,8 @@ function updatePieceForSpecificDirection(directionX, directionY, focusedSquareRo
 
     while (currentX < 8 && currentX >= 0 && currentY <= 8 && currentY >= 1) {
         var currentSquare = getSquare(currentX, currentY, board);
-        changePieceColor(currentSquare);
+        if(isOtherPiecesColorPlaced(currentSquare))
+            changePieceColor(currentSquare);
         currentX = (Number(currentX) + Number(directionX));
         currentY = (Number(currentY) + Number(directionY));
     }
