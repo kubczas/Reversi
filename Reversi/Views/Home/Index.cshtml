@@ -2,16 +2,37 @@
     ViewBag.Title = "Home";
 }
 <body>
-<div class="jumbotron">
-    <h2>
-        Reversi
-    </h2>
-    <h5>
-        Reversi is a strategy board game for two players, played on an 8×8 uncheckered board. There are sixty-four identical game pieces called disks (often spelled "discs"), which are light on one side and dark on the other. Players take turns placing disks on the board with their assigned color facing up. During a play, any disks of the opponent's color that are in a straight line and bounded by the disk just placed and another disk of the current player's color are turned over to the current player's color.
-    </h5>
-</div>
-    <hr/>
-    <div id="board"></div>
+    <div class="row">
+        <div class="card">
+            <h4 class="text-center">Result</h4>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img src="../../Images/blackpiece.jpg" style="width: 45px; height: 45px; float: left" />
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="text-center">
+                            <b id="blackResult">2</b> - <b id="whiteResult">2</b>
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img src="../../Images/whitepiece.jpg" style="width: 45px; height: 45px; float: right" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="board"></div>
+    </div>
+    <div class="jumbotron">
+        <h2>
+            Reversi
+        </h2>
+        <h5>
+            Reversi is a strategy board game for two players, played on an 8×8 uncheckered board. There are sixty-four identical game pieces called disks (often spelled "discs"), which are light on one side and dark on the other. Players take turns placing disks on the board with their assigned color facing up. During a play, any disks of the opponent's color that are in a straight line and bounded by the disk just placed and another disk of the current player's color are turned over to the current player's color.
+        </h5>
+    </div>
 </body>
 <script type="text/javascript">
     window.onload = init();

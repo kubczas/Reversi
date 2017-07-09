@@ -68,6 +68,7 @@ function onSquareClick(clickedSquare, clickedSquareRow, clickedSquareColumn, boa
         clickedSquare.style.color = 'black';
         updatePieces(clickedSquare, clickedSquareRow, clickedSquareColumn, board);
         changeCurrentTurn();
+        updateResults();
     }
 }
 
@@ -128,4 +129,15 @@ function isPieceFullifulRequirement(directionX, directionY, focusedSquareRow, fo
         return isCurrentTurnColorPiecePlaced(nextPiece);
     }
     return false;
+}
+
+function updateResults(){
+    var whitePieces = $(".whiteplaced").map(function () {
+        return this.innerHTML;
+    }).get();
+    var blackPieces = $(".blackplaced").map(function () {
+        return this.innerHTML;
+    }).get();
+    document.getElementById("whiteResult").textContent = whitePieces.length.toString();
+    document.getElementById("blackResult").textContent = blackPieces.length.toString();
 }
