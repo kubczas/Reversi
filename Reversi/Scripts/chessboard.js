@@ -1,5 +1,6 @@
-﻿window.ChessBoard = function (boardId, config) {
-    var board = {};
+﻿var helpBoard = new Array(8);
+var uiBoard = {}
+ChessBoard = function (boardId, config) {
     var boardWidthFix;
     var squareSize;
     var options = {
@@ -20,21 +21,19 @@
         createBoard();
     }
 
-    function calcSquareColumn(column) {
-        return String.fromCharCode(97 + column);
-    }
-
     function createBoard() {
         var boardElement = document.getElementById(boardId);
         boardElement.classList.add('chessboard');
-        board.element = boardElement;
+        uiBoard.element = boardElement;
         calculateSquareSize();
-        for (var r = 8; r >= 1; r--) {
+        for (var r = 7; r >= 0; r--) {
             var rowElement = document.createElement('div');
 
-            board[r] = {
+            uiBoard[r] = {
                 element: rowElement
             };
+
+            helpBoard[r] = new Array(8);
 
             for (var c = 0; c < 8; c++) {
                 var squareElement = document.createElement('div');
@@ -51,10 +50,11 @@
                     squareElement.addEventListener('mouseleave', onSquareFocusLost);
                 }
                 squareElement.setAttribute('data-square-row', r);
-                squareElement.setAttribute('data-square-column', calcSquareColumn(c));
-                board[r][c] = {
+                squareElement.setAttribute('data-square-column', c);
+                uiBoard[r][c] = {
                     element: squareElement
                 };
+                helpBoard[r][c] = null;
                 setStartedPieces(squareElement, r, c);
                 rowElement.appendChild(squareElement);
             }
@@ -65,7 +65,7 @@
     }
 
     function calculateSquareSize() {
-        var boardStyle = getComputedStyle(board.element);
+        var boardStyle = getComputedStyle(uiBoard.element);
         var boardBorderWidth = parseInt(boardStyle.borderTopWidth);
 
         if (boardStyle.boxSizing === 'border-box') {
@@ -74,7 +74,7 @@
             boardWidthFix = 0;
         }
 
-        var parentStyle = getComputedStyle(board.element.parentNode);
+        var parentStyle = getComputedStyle(uiBoard.element.parentNode);
         var parentWidth = parseInt(parentStyle.width) - parseInt(parentStyle.paddingLeft)
             - parseInt(parentStyle.paddingRight);
 
@@ -88,33 +88,35 @@
         var rowWidthPx = (8 * squareSize) + 'px';
         var backgroundSizePx = (6 * squareSize) + 'px';
 
-        board.element.style.width = (8 * squareSize) + boardWidthFix + 'px';
+        uiBoard.element.style.width = (8 * squareSize) + boardWidthFix + 'px';
 
-        for (var r = 8; r >= 1; r--) {
-            board[r].element.style.width = rowWidthPx;
-            board[r].element.style.height = squareSizePx;
+        for (var r = 0; r < 8; r++) {
+            uiBoard[r].element.style.width = rowWidthPx;
+            uiBoard[r].element.style.height = squareSizePx;
 
             for (var c = 0; c < 8; c++) {
-                board[r][c].element.style.width = squareSizePx;
-                board[r][c].element.style.height = squareSizePx;
-                board[r][c].element.style.backgroundSize = backgroundSizePx;
+                uiBoard[r][c].element.style.width = squareSizePx;
+                uiBoard[r][c].element.style.height = squareSizePx;
+                uiBoard[r][c].element.style.backgroundSize = backgroundSizePx;
             }
         }
     }
 
     function setStartedPieces(squareElement, row, column) {
-        if ((row === 5 && column === 3) || (row === 4 && column === 4)) {
+        if ((row === 4 && column === 3) || (row === 3 && column === 4)) {
             var whitePiece = document.createElement('div');
             whitePiece.className = 'white piece';
             setSquareElementSize(whitePiece);
             squareElement.classList.add('whiteplaced');
             squareElement.appendChild(whitePiece);
-        } else if ((row === 5 && column === 4) || (row === 4 && column === 3)) {
+            helpBoard[row][column] = TURNS.WHITE;
+        } else if ((row === 4 && column === 4) || (row === 3 && column === 3)) {
             var blackPiece = document.createElement('div');
             setSquareElementSize(blackPiece);
             blackPiece.className = 'black piece';
             squareElement.classList.add('blackplaced');
             squareElement.appendChild(blackPiece);
+            helpBoard[row][column] = TURNS.BLACK;
         }
     }
 
@@ -124,15 +126,14 @@
     }
 
     function getBoardSquare(row, column) {
-        var c = column.charCodeAt(0) - 97;
-        return board[row][c];
+        return uiBoard[row][column];
     }
 
     function onSquareClick(event) {
         var clickedSquareRow = event.target.getAttribute('data-square-row');
         var clickedSquareColumn = event.target.getAttribute('data-square-column');
         var clickedSquare = getBoardSquare(clickedSquareRow, clickedSquareColumn).element;
-        options.onSquareClick(clickedSquare, clickedSquareRow, clickedSquareColumn, board, squareSize);
+        options.onSquareClick(clickedSquare, clickedSquareRow, clickedSquareColumn, uiBoard, squareSize);
     }
 
     function onSquareFocus(event) {
@@ -140,7 +141,7 @@
         var focusedSquareColumn = event.target.getAttribute('data-square-column');
         var focusedSquare = getBoardSquare(focusedSquareRow, focusedSquareColumn).element;
         if (!focusedSquare.classList.contains('placed')) {
-            options.onSquareFocus(focusedSquare, focusedSquareRow, focusedSquareColumn, board);
+            options.onSquareFocus(focusedSquare, focusedSquareRow, focusedSquareColumn, uiBoard);
         }
     }
     
