@@ -1,34 +1,30 @@
 ﻿var maxDepth = 4;
 
-function getBestMoveMiniMax(board, aiColor, currentDepth) {
+function getBestMoveMiniMax(board, currentTurnColor, currentDepth) {
     if (currentDepth >= maxDepth)
-        return evaluateBestMove(board, aiColor);
+        return evaluateBestMove(board, currentTurnColor);
 
-    var availableMoves = getAvailableFields(board, aiColor);
+    var availableMoves = getAvailableFields(board, aiColor);//todo
     if (availableMoves.length === 0)
         return null;
 
-    if (aiColor === TURNS.WHITE)
+    if (currentTurnColor === aiColor)
         return getMax(board, aiColor, currentDepth, availableMoves);
     else
-        return getMin(board, aiColor, currentDepth);
+        return getMin(board, humanPlayerColor, currentDepth);
 }
 
-function evaluateBestMove(board, aiColor) {
+function evaluateBestMove(board, currentTurnColor) {
     
 }
 
-function getAvailableFields(board, aiColor) {
-    
-}
-
-function getMax(board, aiColor, currentDepth, availableMoves){//todo aiColor -> currentColor
+function getMax(board, pieceColor, currentDepth, availableMoves) {
     var bestValue = MIN_VALUE;
     var bestMove = null;
     for (var  i = 0; i < availableMoves.length; i++) {
-        var newBoard = getBoardAfterMove(board, aiColor, availableMoves[i]);
+        var newBoard = getBoardAfterMove(board, pieceColor, availableMoves[i]);
 
-        var currentResult = getBestMoveMiniMax(newBoard, aiColor, currentDepth + 1);
+        var currentResult = getBestMoveMiniMax(newBoard, pieceColor, currentDepth + 1);
         if (bestValue < currentResult.moveValue)
         {
             bestValue = currentResult.moveValue;
@@ -41,13 +37,13 @@ function getMax(board, aiColor, currentDepth, availableMoves){//todo aiColor -> 
     }
 }
 
-function getMin(board, aiColor, currentDepth, availableMoves) {
+function getMin(board, pieceColor, currentDepth, availableMoves) {
     var bestValue = MAX_VALUE;
     var bestMove = null;
     for (var i = 0; i < availableMoves.length; i++) {
-        var newBoard = getBoardAfterMove(board, aiColor, availableMoves[i]);
+        var newBoard = getBoardAfterMove(board, pieceColor, availableMoves[i]);
 
-        var currentResult = getBestMoveMiniMax(newBoard, aiColor, currentDepth + 1);
+        var currentResult = getBestMoveMiniMax(newBoard, pieceColor, currentDepth + 1);
         if (bestValue > currentResult.moveValue) {
             bestValue = currentResult.moveValue;
             bestMove = currentResult.bestMove;
@@ -59,6 +55,8 @@ function getMin(board, aiColor, currentDepth, availableMoves) {
     }
 }
 
-function getBoardAfterMove(board, aiColor, availableMove) {
-    
+function getBoardAfterMove(board, color, availableMove) {
+    var boardAfterMove = board.slice(0);
+    boardAfterMove[availableMove.row][availableMove.column] = color;
+    return boardAfterMove;
 }

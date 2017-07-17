@@ -5,6 +5,7 @@ var TURNS = {
 }
 var currentTurn = TURNS.WHITE;
 var humanPlayerColor = TURNS.WHITE;
+var aiColor = TURNS.BLACK;
 var canSetPiece = false;
 var lastFocused;
 var directionCoordinates = [
@@ -31,7 +32,7 @@ function verifyIfFocusedSquareHasPlacedPiece(focusedSquare) {
 }
 
 function verifyIfFocusedSquareHasPlacedPiece(row, column) {
-    return helpBoard[row][column] !== null;
+    return currentStatusBoard[row][column] !== null;
 }
 
 function changeCurrentTurn() {
@@ -45,10 +46,10 @@ function updatePieceForSpecificDirection(directionX, directionY, focusedSquareRo
     var currentX = (Number(focusedSquareColumn) + Number(directionX));
     var currentY = (Number(focusedSquareRow) + Number(directionY));
 
-    while (currentX < 8 && currentX >= 0 && currentY < 8 && currentY >= 0) {
+    while (isPieceInsideBoard(currentY, currentX)) {
         var currentSquare = getSquare(currentX, currentY);
         if (isOtherPiecesColorPlaced(currentY, currentX)) {
-            helpBoard[currentY][currentX] = currentTurn;
+            currentStatusBoard[currentY][currentX] = currentTurn;
             changePieceColor(currentSquare);
         }
         currentX = (Number(currentX) + Number(directionX));
@@ -70,15 +71,15 @@ function onSquareClick(clickedSquare, clickedSquareRow, clickedSquareColumn, boa
         canSetPiece = false;
         clickedSquare.style.color = 'black';
         updatePieces(clickedSquareRow, clickedSquareColumn);
-        helpBoard[clickedSquareRow][clickedSquareColumn] = currentTurn;
+        currentStatusBoard[clickedSquareRow][clickedSquareColumn] = currentTurn;
         changeCurrentTurn();
         updateResults();
     }
 }
 
 function onSquareFocus(focusedSquare, focusSquareRow, focusSquareColumn) {
-    //if (currentTurn !== humanPlayerColor)
-    //    return;
+    if (currentTurn !== humanPlayerColor)
+        return;
     lastFocused = focusedSquare;
     if (verifyIfFocusedSquareHasPlacedPiece(focusSquareRow, focusSquareColumn)) {
         focusedSquare.style.color = 'red';

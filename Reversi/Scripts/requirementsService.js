@@ -37,15 +37,15 @@ function isAvailableField(row, column) {
 function isOtherPiecesColorPlaced(row, column) {
     if (isPieceInsideBoard(row, column)) {
         if (currentTurn === TURNS.WHITE)
-            return helpBoard[row][column] === TURNS.BLACK;
+            return currentStatusBoard[row][column] === TURNS.BLACK;
         if (currentTurn === TURNS.BLACK)
-            return helpBoard[row][column] === TURNS.WHITE;
+            return currentStatusBoard[row][column] === TURNS.WHITE;
     }
     return false;
 }
 
 function isCurrentPieceColorPlaced(row, column) {
-    return currentTurn === helpBoard[row][column];
+    return currentTurn === currentStatusBoard[row][column];
 }
 
 function isPieceFullifulRequirement(directionX, directionY, row, column) {

@@ -1,5 +1,7 @@
-﻿var helpBoard = new Array(8);
-var uiBoard = {}
+﻿var currentStatusBoard = new Array(8);
+var uiBoard = {};
+var helpBoard;
+
 ChessBoard = function (boardId, config) {
     var boardWidthFix;
     var squareSize;
@@ -33,28 +35,20 @@ ChessBoard = function (boardId, config) {
                 element: rowElement
             };
 
-            helpBoard[r] = new Array(8);
+            currentStatusBoard[r] = new Array(8);
 
             for (var c = 0; c < 8; c++) {
                 var squareElement = document.createElement('div');
                 squareElement.style.width = squareSize;
                 squareElement.style.height = squareSize;
                 squareElement.className = 'green square';
-                if (options.onSquareClick) {
-                    squareElement.addEventListener('click', onSquareClick);
-                }
-                if (options.onSquareFocus) {
-                    squareElement.addEventListener('mouseover', onSquareFocus);
-                }
-                if (options.onSquareFocusLost) {
-                    squareElement.addEventListener('mouseleave', onSquareFocusLost);
-                }
+                wireEvents(squareElement);
                 squareElement.setAttribute('data-square-row', r);
                 squareElement.setAttribute('data-square-column', c);
                 uiBoard[r][c] = {
                     element: squareElement
                 };
-                helpBoard[r][c] = null;
+                currentStatusBoard[r][c] = null;
                 setStartedPieces(squareElement, r, c);
                 rowElement.appendChild(squareElement);
             }
@@ -109,14 +103,14 @@ ChessBoard = function (boardId, config) {
             setSquareElementSize(whitePiece);
             squareElement.classList.add('whiteplaced');
             squareElement.appendChild(whitePiece);
-            helpBoard[row][column] = TURNS.WHITE;
+            currentStatusBoard[row][column] = TURNS.WHITE;
         } else if ((row === 4 && column === 4) || (row === 3 && column === 3)) {
             var blackPiece = document.createElement('div');
             setSquareElementSize(blackPiece);
             blackPiece.className = 'black piece';
             squareElement.classList.add('blackplaced');
             squareElement.appendChild(blackPiece);
-            helpBoard[row][column] = TURNS.BLACK;
+            currentStatusBoard[row][column] = TURNS.BLACK;
         }
     }
 
@@ -147,6 +141,18 @@ ChessBoard = function (boardId, config) {
     
     function onSquareFocusLost(event) {
         options.onSquareFocusLost();
+    }
+
+    function wireEvents(squareElement) {
+        if (options.onSquareClick) {
+            squareElement.addEventListener('click', onSquareClick);
+        }
+        if (options.onSquareFocus) {
+            squareElement.addEventListener('mouseover', onSquareFocus);
+        }
+        if (options.onSquareFocusLost) {
+            squareElement.addEventListener('mouseleave', onSquareFocusLost);
+        }
     }
 
     initBoard();
