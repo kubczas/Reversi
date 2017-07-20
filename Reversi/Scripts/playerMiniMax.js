@@ -4,14 +4,14 @@ function getBestMoveMiniMax(board, currentTurnColor, currentDepth) {
     if (currentDepth >= maxDepth)
         return evaluateBestMove(board, currentTurnColor);
 
-    var availableMoves = getAvailableFields(board, aiColor);//todo
+    var availableMoves = getAvailableFields(board, currentTurnColor);
     if (availableMoves.length === 0)
         return null;
 
     if (currentTurnColor === aiColor)
         return getMax(board, aiColor, currentDepth, availableMoves);
     else
-        return getMin(board, humanPlayerColor, currentDepth);
+        return getMin(board, aiColor, humanPlayerColor, currentDepth);
 }
 
 function evaluateBestMove(board, currentTurnColor) {

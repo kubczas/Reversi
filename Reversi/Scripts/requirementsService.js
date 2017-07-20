@@ -11,12 +11,12 @@
 
 var availableFields;
 
-function getAvailableFields() {
+function getAvailableFields(currentBoard, currentColor) {
     availableFields = [];
     var index = 0;
     for (var r = 8; r >= 1; r--) {
         for (var c = 0; c < 8; c++) {
-            if (isAvailableField(r, c)) {
+            if (isAvailableField(r, c, currentBoard, currentColor)) {
                 availableFields[index] = new {
                     row: r,
                     column: c
@@ -27,40 +27,40 @@ function getAvailableFields() {
     return availableFields;
 }
 
-function isAvailableField(row, column) {
+function isAvailableField(row, column, currentBoard, currentColor) {
     for (var i = 0; i < 8; i++)
-        if (isPieceFullifulRequirement(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, row, column))
+        if (isPieceFullifulRequirement(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, row, column, currentBoard, currentColor))
             return true;
     return false;
 }
 
-function isOtherPiecesColorPlaced(row, column) {
+function isOtherPiecesColorPlaced(row, column, currentBoard, currentColor) {
     if (isPieceInsideBoard(row, column)) {
-        if (currentTurn === TURNS.WHITE)
-            return currentStatusBoard[row][column] === TURNS.BLACK;
-        if (currentTurn === TURNS.BLACK)
-            return currentStatusBoard[row][column] === TURNS.WHITE;
+        if (currentColor === TURNS.WHITE)
+            return currentBoard[row][column] === TURNS.BLACK;
+        if (currentColor === TURNS.BLACK)
+            return currentBoard[row][column] === TURNS.WHITE;
     }
     return false;
 }
 
-function isCurrentPieceColorPlaced(row, column) {
-    return currentTurn === currentStatusBoard[row][column];
+function isCurrentPieceColorPlaced(row, column, currentBoard, currentColor) {
+    return currentColor === currentBoard[row][column];
 }
 
-function isPieceFullifulRequirement(directionX, directionY, row, column) {
+function isPieceFullifulRequirement(directionX, directionY, row, column, currentBoard, currentColor) {
     var isOtherPiecePlaced = false;
     var currentX = (Number(column) + Number(directionX));
     var currentY = (Number(row) + Number(directionY));
 
-    while (isOtherPiecesColorPlaced(currentY, currentX)) {
+    while (isOtherPiecesColorPlaced(currentY, currentX, currentBoard, currentColor)) {
         isOtherPiecePlaced = true;
         currentX = (Number(currentX) + Number(directionX));
         currentY = (Number(currentY) + Number(directionY));
     }
 
     if (isPieceInsideBoard(currentY, currentX) && isOtherPiecePlaced) {
-        return isCurrentPieceColorPlaced(currentY, currentX);
+        return isCurrentPieceColorPlaced(currentY, currentX, currentBoard, currentColor);
     }
     return false;
 }

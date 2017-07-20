@@ -48,7 +48,7 @@ function updatePieceForSpecificDirection(directionX, directionY, focusedSquareRo
 
     while (isPieceInsideBoard(currentY, currentX)) {
         var currentSquare = getSquare(currentX, currentY);
-        if (isOtherPiecesColorPlaced(currentY, currentX)) {
+        if (isOtherPiecesColorPlaced(currentY, currentX, currentStatusBoard)) {
             currentStatusBoard[currentY][currentX] = currentTurn;
             changePieceColor(currentSquare);
         }
@@ -59,7 +59,7 @@ function updatePieceForSpecificDirection(directionX, directionY, focusedSquareRo
 
 function updatePieces(clickedSquareRow, clickedSquareColumn) {
     for (var i = 0; i < 8; i++) {
-        if (isPieceFullifulRequirement(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, clickedSquareRow, clickedSquareColumn)) {
+        if (isPieceFullifulRequirement(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, clickedSquareRow, clickedSquareColumn, currentStatusBoard)) {
             updatePieceForSpecificDirection(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, clickedSquareRow, clickedSquareColumn);
         }
     }
@@ -86,7 +86,7 @@ function onSquareFocus(focusedSquare, focusSquareRow, focusSquareColumn) {
         return;
     }
     for (var i = 0; i < 8; i++) {
-        if (isAvailableField(focusSquareRow, focusSquareColumn)) {
+        if (isAvailableField(focusSquareRow, focusSquareColumn, currentStatusBoard)) {
             focusedSquare.style.color = 'green';
             canSetPiece = true;
             return;
