@@ -14,13 +14,14 @@ var availableFields;
 function getAvailableFields(currentBoard, currentColor) {
     availableFields = [];
     var index = 0;
-    for (var r = 8; r >= 1; r--) {
+    for (var r = 0; r < 8; r++) {
         for (var c = 0; c < 8; c++) {
             if (isAvailableField(r, c, currentBoard, currentColor)) {
-                availableFields[index] = new {
+                availableFields[index] = {
                     row: r,
                     column: c
                 }
+                index++;
             }
         }
     }

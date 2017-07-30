@@ -1,224 +1,230 @@
 ﻿var POSSIBLE_MOVE = 100;
+var NUMBER_OF_PIECES = 50;
+var CORNERS = 200;
+var EDGE_FIELDS = 180;
+var NEARBY_CORNER = 80;
+var WORST_FIELD = 150;
+var CLOSER_EDGE = 150;
 
 var cornersCoordinates = [
-        new {
+        {
             row: 0,
             column: 0
         },
-        new {
+        {
             row: 0,
             column: 7
         },
-        new {
+        {
             row: 7,
             column: 0
         },
-        new {
+        {
             row: 7,
             column: 7
         }
 ];
 
 var fieldsNearbyCornerCoordinates = [
-        new {
+        {
             row: 0,
             column: 1
         },
-        new {
+        {
             row: 0,
             column: 6
         },
-        new {
+        {
             row: 7,
             column: 1
         },
-        new {
+        {
             row: 7,
             column: 6
         },
-        new {
+        {
             row: 1,
             column: 0
         },
-        new {
+        {
             row: 1,
             column: 7
         },
-        new {
+        {
             row: 6,
             column: 0
         },
-        new {
+        {
             row: 6,
             column: 7
         }
 ];
 
 var worstFieldsCoordinates = [
-    new {
+    {
         row: 1,
         column: 1
     },
-    new {
+    {
         row: 1,
         column: 6
     },
-    new {
+    {
         row: 6,
         column: 1
     },
-    new {
+    {
         row: 6,
         column: 6
     }
 ];
 
 var edgeFieldsCoordinates = [
-        new {
-            row: 0,
-            column: 2
-        },
-        new {
-            row: 0,
-            column: 3
-        },
-        new {
-            row: 0,
-            column: 4
-        },
-        new {
-            row: 0,
-            column: 5
-        },
-        new {
-            row: 2,
-            column: 0
-        },
-        new {
-            row: 3,
-            column: 0
-        },
-        new {
-            row: 4,
-            column: 0
-        },
-        new {
-            row: 5,
-            column: 0
-        },
-        new {
-            row: 2,
-            column: 7
-        },
-        new {
-            row: 3,
-            column: 7
-        },
-        new {
-            row: 4,
-            column: 7
-        },
-        new {
-            row: 5,
-            column: 7
-        },
-        new {
-            row: 7,
-            column: 2
-        },
-        new {
-            row: 7,
-            column: 3
-        },
-        new {
-            row: 7,
-            column: 4
-        },
-        new {
-            row: 7,
-            column: 5
-        }
+    {
+        row: 0,
+        column: 2
+    },
+    {
+        row: 0,
+        column: 3
+    },
+    {
+        row: 0,
+        column: 4
+    },
+    {
+        row: 0,
+        column: 5
+    },
+    {
+        row: 2,
+        column: 0
+    },
+    {
+        row: 3,
+        column: 0
+    },
+    {
+        row: 4,
+        column: 0
+    },
+    {
+        row: 5,
+        column: 0
+    },
+    {
+        row: 2,
+        column: 7
+    },
+    {
+        row: 3,
+        column: 7
+    },
+    {
+        row: 4,
+        column: 7
+    },
+    {
+        row: 5,
+        column: 7
+    },
+    {
+        row: 7,
+        column: 2
+    },
+    {
+        row: 7,
+        column: 3
+    },
+    {
+        row: 7,
+        column: 4
+    },
+    {
+        row: 7,
+        column: 5
+    }
 ];
 
 var fieldsCloseToEdgeCoordinates = [
-        new {
-            row: 1,
-            column: 2
-        },
-        new {
-            row: 1,
-            column: 3
-        },
-        new {
-            row: 1,
-            column: 4
-        },
-        new {
-            row: 1,
-            column: 5
-        },
-        new {
-            row: 2,
-            column: 1
-        },
-        new {
-            row: 3,
-            column: 1
-        },
-        new {
-            row: 4,
-            column: 1
-        },
-        new {
-            row: 5,
-            column: 1
-        },
-        new {
-            row: 2,
-            column: 6
-        },
-        new {
-            row: 3,
-            column: 6
-        },
-        new {
-            row: 4,
-            column: 6
-        },
-        new {
-            row: 5,
-            column: 6
-        },
-        new {
-            row: 6,
-            column: 2
-        },
-        new {
-            row: 6,
-            column: 3
-        },
-        new {
-            row: 6,
-            column: 4
-        },
-        new {
-            row: 6,
-            column: 5
-        }
+    {
+        row: 1,
+        column: 2
+    },
+    {
+        row: 1,
+        column: 3
+    },
+    {
+        row: 1,
+        column: 4
+    },
+    {
+        row: 1,
+        column: 5
+    },
+    {
+        row: 2,
+        column: 1
+    },
+    {
+        row: 3,
+        column: 1
+    },
+    {
+        row: 4,
+        column: 1
+    },
+    {
+        row: 5,
+        column: 1
+    },
+    {
+        row: 2,
+        column: 6
+    },
+    {
+        row: 3,
+        column: 6
+    },
+    {
+        row: 4,
+        column: 6
+    },
+    {
+        row: 5,
+        column: 6
+    },
+    {
+        row: 6,
+        column: 2
+    },
+    {
+        row: 6,
+        column: 3
+    },
+    {
+        row: 6,
+        column: 4
+    },
+    {
+        row: 6,
+        column: 5
+    }
 ];
 
-function countFields(coordinateBoard, board) {
+function countFields(coordinateBoard, board, color) {
     var result = 0;
     for (var i = 0; i < coordinateBoard.length; i++) {
-        if (board[coordinateBoard[i].row][coordinateBoard[i].column] === aiColor) {
+        if (board[coordinateBoard[i].row][coordinateBoard[i].column] === color) {
             result++;
         }
     }
     return result;
 }
 
-function countCorners(board) {
-    return countFields(cornersCoordinates, board);
+function countCorners(board, color) {
+    return countFields(cornersCoordinates, board, color);
 }
 
 function countPossibleAIMoves(board) {
@@ -229,20 +235,20 @@ function countPossibleHumanMoves(board) {
     return getAvailableFields(board, humanPlayerColor).length;
 }
 
-function countFieldsNearbyCorner(board) {
-    return countFields(fieldsNearbyCornerCoordinates, board);
+function countFieldsNearbyCorner(board, color) {
+    return countFields(fieldsNearbyCornerCoordinates, board, color);
 }
 
-function countWorstField(board) {
-    return countFields(worstFieldsCoordinates, board);
+function countWorstField(board, color) {
+    return countFields(worstFieldsCoordinates, board, color);
 }
 
-function countEdgeFields(board) {
-    return countFields(edgeFieldsCoordinates, board);
+function countEdgeFields(board, color) {
+    return countFields(edgeFieldsCoordinates, board, color);
 }
 
-function countFieldsCloseToTheEdge(board) {
-    return countFields(fieldsCloseToEdgeCoordinates, board);
+function countFieldsCloseToTheEdge(board, color) {
+    return countFields(fieldsCloseToEdgeCoordinates, board, color);
 }
 
 function evaluteByPossibleMoves(board) {
@@ -254,6 +260,40 @@ function evaluteByPossibleMoves(board) {
     return 0;
 }
 
-function evaluateByNumberOfPieces(board) {
-    //todo write functions for calculate current result
+function evaluateByCorners(board) {
+    var aiCorners = countCorners(board, aiColor);
+    var humanCorners = countCorners(board, humanPlayerColor);
+    if (aiCorners !== humanCorners) {
+        return CORNERS * (aiCorners - humanCorners) / (aiCorners + humanCorners);
+    }
+    return 0;
+}
+
+function evaluateByEdgeFields(board) {
+    var aiCorners = countEdgeFields(board, aiColor);
+    var humanCorners = countEdgeFields(board, humanPlayerColor);
+    if (aiCorners !== humanCorners) {
+        return EDGE_FIELDS * (aiCorners - humanCorners) / (aiCorners + humanCorners);
+    }
+    return 0;
+}
+
+function evaluateByWorstFields(board) {
+    var result = 0;
+    var aiNearbyCorner = countFieldsNearbyCorner(board, aiColor);
+    var humanNearbyCorner = countFieldsNearbyCorner(board, humanPlayerColor);
+    if (aiNearbyCorner !== humanNearbyCorner)
+        result = NEARBY_CORNER * (aiNearbyCorner - humanNearbyCorner) / (aiNearbyCorner + humanNearbyCorner);
+
+    var aiWorstFields = countWorstField(board, aiColor);
+    var humanWorstFields = countWorstField(board, humanPlayerColor);
+    if (aiWorstFields !== humanWorstFields) 
+        result = WORST_FIELD * (aiWorstFields - humanWorstFields) / (aiWorstFields + humanWorstFields);
+
+    var aiCloserEdgeFields = countFieldsCloseToTheEdge(board, aiColor);
+    var humanCloserEdgeFields = countFieldsCloseToTheEdge(board, humanPlayerColor);
+    if (aiCloserEdgeFields !== humanCloserEdgeFields)
+        result = CLOSER_EDGE * (aiCloserEdgeFields - humanCloserEdgeFields) / (aiCloserEdgeFields + humanCloserEdgeFields);
+
+    return result;
 }

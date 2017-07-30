@@ -48,7 +48,7 @@ function updatePieceForSpecificDirection(directionX, directionY, focusedSquareRo
 
     while (isPieceInsideBoard(currentY, currentX)) {
         var currentSquare = getSquare(currentX, currentY);
-        if (isOtherPiecesColorPlaced(currentY, currentX, currentStatusBoard)) {
+        if (isOtherPiecesColorPlaced(currentY, currentX, currentStatusBoard, currentTurn)) {
             currentStatusBoard[currentY][currentX] = currentTurn;
             changePieceColor(currentSquare);
         }
@@ -59,7 +59,7 @@ function updatePieceForSpecificDirection(directionX, directionY, focusedSquareRo
 
 function updatePieces(clickedSquareRow, clickedSquareColumn) {
     for (var i = 0; i < 8; i++) {
-        if (isPieceFullifulRequirement(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, clickedSquareRow, clickedSquareColumn, currentStatusBoard)) {
+        if (isPieceFullifulRequirement(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, clickedSquareRow, clickedSquareColumn, currentStatusBoard, currentTurn)) {
             updatePieceForSpecificDirection(directionCoordinates[i].coordinates.x, directionCoordinates[i].coordinates.y, clickedSquareRow, clickedSquareColumn);
         }
     }
@@ -67,13 +67,11 @@ function updatePieces(clickedSquareRow, clickedSquareColumn) {
 
 function onSquareClick(clickedSquare, clickedSquareRow, clickedSquareColumn, board, squareSize) {
     if (canSetPiece) {
-        createPiece(clickedSquare, squareSize);
         canSetPiece = false;
-        clickedSquare.style.color = 'black';
-        updatePieces(clickedSquareRow, clickedSquareColumn);
-        currentStatusBoard[clickedSquareRow][clickedSquareColumn] = currentTurn;
-        changeCurrentTurn();
-        updateResults();
+        move(clickedSquare, squareSize, clickedSquareRow, clickedSquareColumn);
+        var bestMove = getBestMoveMiniMax(currentStatusBoard, aiColor, 0);
+        var bestMoveSquare = uiBoard[bestMove.bestMove.row][bestMove.bestMove.column];
+        move(bestMoveSquare, squareSize, bestMove.bestMove.row, bestMove.bestMove.column);
     }
 }
 
@@ -86,7 +84,7 @@ function onSquareFocus(focusedSquare, focusSquareRow, focusSquareColumn) {
         return;
     }
     for (var i = 0; i < 8; i++) {
-        if (isAvailableField(focusSquareRow, focusSquareColumn, currentStatusBoard)) {
+        if (isAvailableField(focusSquareRow, focusSquareColumn, currentStatusBoard, currentTurn)) {
             focusedSquare.style.color = 'green';
             canSetPiece = true;
             return;
@@ -126,4 +124,13 @@ function updateResults() {
     }).get();
     document.getElementById("whiteResult").textContent = whitePieces.length.toString();
     document.getElementById("blackResult").textContent = blackPieces.length.toString();
+}
+
+function move(square, squareSize, squareRow, squareColumn) {
+    createPiece(square, squareSize);
+    square.style.color = 'black';
+    updatePieces(squareRow, squareColumn);
+    currentStatusBoard[squareRow][squareColumn] = currentTurn;
+    changeCurrentTurn();
+    updateResults();
 }
